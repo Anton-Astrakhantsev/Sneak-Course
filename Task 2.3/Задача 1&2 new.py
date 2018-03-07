@@ -5,6 +5,7 @@ from xml.etree import ElementTree as et
 def nor(p):
     return p.lower().strip().split()
 
+
 def getting_information(file):
     origin = []
     if file[-1] == 'n':
