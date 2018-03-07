@@ -1,7 +1,7 @@
 import chardet
 
 
-def getting_infarmation(u):
+def getting_information(u):
     origin = []
     with open(u, 'rb') as f:
         data = f.read()
