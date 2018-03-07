@@ -13,7 +13,7 @@ def getting_information(u):
     return origin
 
 
-def p_bloomed(start_list):
+def p_bloomed(start_list): # Буква p подразумевает, что они составные части функции preparing_information
     fix = lambda l: sum(l, [])
     res_list = fix(start_list)
     return res_list
