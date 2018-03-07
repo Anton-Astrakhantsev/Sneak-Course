@@ -46,7 +46,7 @@ final = [half_final[0]]
 
 p = 1
 while len(final) < 10:
-    if half_final[p] != final[len(final) - 1]:
+    if half_final[p] not in final:
         final.append(half_final[p])
     p += 1
 
