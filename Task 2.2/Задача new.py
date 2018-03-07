@@ -66,7 +66,7 @@ def showing_result(analyzed_list, origin_list):
 
 def start():
     origin = input("Введите название файла ")
-    first = getting_infarmation(origin)
+    first = getting_information(origin)
     second = preparing_information(first)
     three = analyzing_information(second)
     final = showing_result(three, second)
