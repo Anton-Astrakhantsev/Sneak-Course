@@ -1,13 +1,13 @@
 import chardet
 
 
-def getting_information(u):
+def getting_information(file):
     origin = []
-    with open(u, 'rb') as f:
+    with open(file, 'rb') as f:
         data = f.read()
         code = chardet.detect(data)
         print("Кодировка: {} с вероятностью {}\n".format(code['encoding'], code['confidence']))
-    with open(u, encoding=code['encoding']) as f:
+    with open(file, encoding=code['encoding']) as f:
         for line in f:
             origin.append(line.lower().strip().split())
     return origin
