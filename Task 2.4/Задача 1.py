@@ -1,30 +1,44 @@
 import os
-# готово на 40%
 
-# 1. собирает список первоначальных документов
-# 2. ищет среди них слово
-# 3. изменяет список файлов
-# 4. повторить 2
 
-def all_files():
+def all_files(n_list):
+    os.chdir(os.path.join(os.path.dirname(__file__), 'Materials'))
     time_list = os.listdir(path=".")
     for i in time_list:
-        if i[-3:] = 'sql':
-            res_list.append(i)
+        if i[-3:] == 'sql':
+            n_list.append(i)
+    return n_list
 
 
-def peek(link): # поиск в файле
+def peek(link, word):
     with open(link, encoding='utf-8') as f:
+        data = f.readlines()
         num = 0
-        data = f.read()
-        for line in inf:
+        for line in data:
             num += line.count(word)
-        if num != 0: res_list.append(link)
+    return num
+
+
+def show(v_list, v_number):
+    print(v_list)
+    print("Всего: {}".format(v_number))
 
 
 def find_and_point():
-    res_list = []
+    f_list = []
+    f_list = all_files(f_list)
+    print(f_list[0])
     while 1:
+        val = 0
+        s_list = []
         word = input('Введите строку: ')
-        for i in res_list:
-            
+        for i in f_list:
+            if peek(i, word) != 0:
+                s_list.append(i)
+                val += peek(i, word)
+        show(s_list, val)
+        print(len(s_list))
+        f_list = s_list
+
+
+find_and_point()
