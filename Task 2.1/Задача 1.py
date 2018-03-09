@@ -1,31 +1,25 @@
-# В принципе т.к. у нас есть полностью работающий код для словаря cook_book,
-# но ингредиенты записаны в другом файле, всю задачу можно свести
-# к созданию полностью аналогичного словаря и преминить старыйй код к нему
-
-
-def cool(st):  # эта программа пробразует код формата "Яйцо | 2 | шт" в нужный для cook_book словарь
+def cut_string(st):  # эта программа пробразует код формата "Яйцо | 2 | шт" в нужный для cook_book словарь
     sp = st.split(' | ')
     dict_sp = {'ingridient_name': sp[0].lower(), 'quantity': int(sp[1]), 'measure': sp[2]}
     return dict_sp
 
 
-cook_book = {}
+def open_book(link):
+    cook_book = {}
+    with open(link, encoding='utf-8') as f:
+        for line in f:
+            x = line.strip().lower()
+            in_list = []
+            time = int(f.readline().strip())
+            while time != 0:
+                in_list.append(cut_string(f.readline().strip()))
+                time -= 1
+            cook_book[x] = in_list
+            f.readline()
+    return cook_book
 
-with open('Ингредиенты.txt', encoding='utf-8') as f:
-    for line in f:
-        x = str(line).strip().lower()
-        in_list = []
-        time = int(str(f.readline().strip()))
-        while time != 0:
-            in_list.append(cool(f.readline().strip()))
-            time -= 1
-        cook_book[x] = in_list
-        f.readline()
 
-
-# print(cook_book) # в качестве проверки можно убедиться, что новый cook_book сделан полностью по формату старой версии
-
-def get_shop_list_by_dishes(dishes, person_count):
+def get_shop_list_by_dishes(dishes, person_count, cook_book):
     shop_list = {}
     for dish in dishes:
         for ingridient in cook_book[dish]:
@@ -46,10 +40,11 @@ def print_shop_list(shop_list):
 
 
 def create_shop_list():
+    cook_book = open_book('Ингредиенты.txt')
     person_count = int(input('Введите количество человек: '))
     dishes = input('Введите блюда в расчете на одного человека (через запятую): ') \
         .lower().split(', ')
-    shop_list = get_shop_list_by_dishes(dishes, person_count)
+    shop_list = get_shop_list_by_dishes(dishes, person_count, cook_book)
     print_shop_list(shop_list)
 
 
