@@ -7,7 +7,7 @@ print("For creating animals you have to chose the class and input weight")
 print("Here are available 4 classes for mammals:")
 print("Cow, goat, sheep, pig")
 print("And 3 classes for birds:")
-print("Duck, chiken, goose")
+print("Duck, chicken, goose")
 print("And a secret class, platypus!")
 print("Every animal has some limbs")
 print("Every animal can sound with the function \"roar\"")
@@ -15,13 +15,12 @@ print("Some animals can make some goods with the function \"good\"")
 print("You can transform your animal to meat")
 print("Amount of meat depends on weight of the animal")
 print("But there is some chance that the animal will run off")
-print("Like in the movie \"Chiken Run\"")
+print("Like in the movie \"Chicken Run\"")
 print("Use the function \"description()\" to know more about the animal")
 print("Good Duck!\n")
 
 
-class animal():
-
+class Animal:
     sound = None
 
     def roar(self):
@@ -41,66 +40,66 @@ class animal():
         self.mass = massa
         self.flesh = round(math.sqrt(self.mass), 2)
 
-    def ChikenRun(self):
+    def chicken_run(self):
         if random.randint(1, 10) == 10:
             print("They run off, Sir!")
         else:
             print("You got {} kg of {}".format(self.flesh, self.hard_product))
 
     def meat(self):
-        self.ChikenRun()
+        self.chicken_run()
 
 
-class mammal(animal):
+class Mammal(Animal):
     leg = 4
     tail = 1
 
 
-class bird(animal):
+class Bird(Animal):
     wing = 2
     beak = 1
     leg = 2
     tail = 1
 
 
-class cow(mammal):
+class Cow(Mammal):
     sound = "Moo!"
     product = "milk"
     hard_product = "beef"
 
 
-class goat(mammal):
+class Goat(Mammal):
     sound = "Bleat!"
     hard_product = "goat's meat"
 
 
-class sheep(mammal):
+class Sheep(Mammal):
     sound = "Bleat!"
     product = "fleece"
     hard_product = "mutton"
 
 
-class pig(mammal):
+class Pig(Mammal):
     sound = "Oink!"
     hard_product = "bacon"
 
 
-class duck(bird):
+class Duck(Bird):
     sound = "Quack!"
     hard_product = "duck's meat"
 
 
-class chiken(bird):
+class Chicken(Bird):
     sound = "Puk-Puk!"
-    hard_product = "chiken"
+    hard_product = "chicken"
 
 
-class goose(bird):
+class Goose(Bird):
     sound = "Quack!"
     hard_product = "duck's meat"
 
 
-class platypus(mammal, bird):
+class Platypus(Mammal, Bird):
     sound = "I'm not a duck!"
     product = "sense of strangeness"
     wing = 0
@@ -111,15 +110,16 @@ class platypus(mammal, bird):
         if answer == "yes":
             self.hard_product = "human's meat"
             self.flesh = "a lot"
-            super(platypus, self).meat()
+            super(Platypus, self).meat()
         else:
             print("Good choice")
 
+
 # Примеры
-mimi = cow(720)
-perry = platypus(1.7)
-donald = duck(1.2)
-dolly = sheep(75)
+mimi = Cow(720)
+perry = Platypus(1.7)
+donald = Duck(1.2)
+dolly = Sheep(75)
 
 
 def description(beast):
@@ -140,7 +140,7 @@ def description(beast):
         print(
             "You can make {} from it".format(beast.hard_product),
             "\nbut please, don't do this!"
-            )
+        )
     print("\nWe are happy to meet you!")
 
 # Примеры работы функций над животными
