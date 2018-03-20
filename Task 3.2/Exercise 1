@@ -30,7 +30,7 @@ def plat_sel(l_x, l_y, rf):
     # Если заменить link = '', программа выдает ошибку, хоть link в дальнейшем изменяется
     opt_f = 0
     opt_s = 0
-    pl = input("\nПожалуйста, выберете переводчик: Яндекс или Multillect (y/m) ")
+    pl = input("\nПожалуйста, выберите переводчик: Яндекс или Multillect (y/m) ")
     if pl == 'y':
         link = 'https://translate.yandex.net/api/v1/tr.json/translate'
         opt_f = {
