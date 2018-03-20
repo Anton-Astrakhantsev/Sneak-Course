@@ -1,1 +1,77 @@
-# 40%
+# 80%
+# Программа работает, но еще осталась большая часть, связанная с оформлением
+
+import requests
+
+path_one = 'C:\\Users\\En\\PycharmProjects\\Task 3.2.2\\DE.txt'
+path_two = 'C:\\Users\\En\\PycharmProjects\\Task 3.2.2\\DE_answer.txt'
+
+def plat_sel():
+    lin = 'https://translate.yandex.net/api/v1/tr.json/translate'
+    pl = input("Пожалуйста, выберете переводчик: Яндекс или Google ").lower()
+    if pl == 'yandex' or pl == 'яндекс':
+        lin = 'https://translate.yandex.net/api/v1/tr.json/translate'
+    elif pl == 'google' or pl == 'гугл':
+        lin = 'https://translate.yandex.net/api/v1/tr.json/translate'
+    return lin
+
+def path_sel():
+    pa_f = input("Пожалуйста, укажите путь к файлу ")
+    if pa_f == '':
+        pa_f = path_one
+    pa_s = input("Пожалуйста, укажите путь к файлу с результатом ")
+    if pa_s == '':
+        pa_s = path_two
+    return [pa_f, pa_s]
+
+def path_take(li):
+    tex = ''
+    with open(li, encoding='utf-8') as f:
+        tex = f.read()
+        return tex
+
+def path_give(li, dat):
+    with open(li, 'w', encoding='utf-8') as f:
+        f.write(''.join(dat['text']))
+
+def lan_check(ll):
+    ll = ll.lower()
+    if ll == 'de' or ll == 'german' or ll == 'dutch' or ll == 'немецкий':
+        return  'de'
+    elif ll == 'es' or ll == 'spanish' or ll == 'испанский':
+        return 'es'
+    elif ll == 'fr' or ll == 'french' or ll == 'французский':
+        return 'fr'
+    elif ll == 'ru' or ll == 'russian' or ll == 'русский' or ll == '':
+        return 'ru'
+    else: return 'en'
+
+def lan_sel():
+    la_f = input("Пожалуйста, укажите язык с которого перевести ")
+    la_f = lan_check(la_f)
+    la_s = input("Пожалуйста, укажите язык на который перевести (по-умолчанию русский) ")
+    la_s = lan_check(la_s)
+    return [la_f, la_s]
+
+def trans():
+    url = plat_sel()
+    paths = path_sel()
+    lans = lan_sel()
+    dat_f = path_take(paths[0])
+    req = requests.request(
+        'post',
+        url,
+        params=dict(
+            id='72d6fbd7.5ab0bf36.0ab3de8b-3-0',
+            srv='tr-text',
+            lang='{}-{}'.format(lans[0], lans[1]),
+            reason='auto'
+        ),
+        data=dict(
+            text=path_take(paths[0])
+        )
+    )
+    path_give(paths[1], req.json())
+    # print(path_take(paths[0]))
+
+trans()
