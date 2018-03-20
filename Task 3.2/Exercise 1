@@ -1,22 +1,18 @@
-# 90%
-# Программа отлично работает, с одним исключением: При попытки использовать переводчик Multillect в переведенном тексте возникают html-символы. К утру Я надеюсь избавиться от этого. И проверить на PEP8
 import requests
 
 
+# Функция path_sel нужна для получения путей к файлу с исходными текстом и файлу с переведенным текстом
 def path_sel():
     pa_f = input("Пожалуйста, укажите путь к файлу ")
-    if pa_f == '':
-        pa_f = path_one
     pa_s = input("Пожалуйста, укажите путь к файлу с результатом ")
-    if pa_s == '':
-        pa_s = path_two
     return [pa_f, pa_s]
 
 
+# Функция lan_sel() получает и хранит языки с которого и на который будет осуществелен перевод
 def lan_sel():
     print(
-        'Возможные языки:'
-        'немецкий (de), испанский(es), французский(fr) и русский(ru)'
+        '\nВозможные языки: '
+        'немецкий(de), испанский(es), французский(fr) и русский(ru)'
     )
     la_f = input("Пожалуйста, укажите язык с которого перевести ")
     la_s = input("Пожалуйста, укажите язык на который перевести (по-умолчанию русский) ")
@@ -25,12 +21,16 @@ def lan_sel():
     return [la_f, la_s]
 
 
+# Функция plat_sel нужна для выбора сайта-переводчика,
+# Она получает языки и текст, просит выбрать букву обозначающуюю сайт
+# И возвращает список из ссылки, параметров, 'data' и этой буквы
 def plat_sel(l_x, l_y, rf):
     link = 'https://translate.yandex.net/api/v1/tr.json/translate'
+    # На этом месте Я столкнулся с немного странной ошибкой, программа требует уже готовую ссылку с самого начала
+    # Если заменить link = '', программа выдает ошибку, хоть link в дальнейшем изменяется
     opt_f = 0
     opt_s = 0
-    text_word = ''
-    pl = input("Пожалуйста, выберете переводчик: Яндекс или Multillect (y/m) ")
+    pl = input("\nПожалуйста, выберете переводчик: Яндекс или Multillect (y/m) ")
     if pl == 'y':
         link = 'https://translate.yandex.net/api/v1/tr.json/translate'
         opt_f = {
@@ -52,33 +52,36 @@ def plat_sel(l_x, l_y, rf):
         opt_s = ''
     return [link, opt_f, opt_s, pl]
 
-def read_file(link):
-    tex = ''
-    with open(link, encoding='utf-8') as f:
-        tex = f.read()
-        return tex
 
-def write_file(link, let, pl):
+def read_file(link):  # Эта Функция считывает текст с файла
+    with open(link, encoding='utf-8') as f:
+        return f.read()
+
+
+def write_file(link, let, pl):  # Эта функция записывает текст в файл
     if pl == 'y':
         with open(link, 'w', encoding='utf-8') as f:
             f.write(''.join(let['text']))
     elif pl == 'm':
+        xx = ''.join(let['result']['translations'])
+        xx = xx.replace('&quot;', '\"').replace('<br />', '')  # Этот переводчик возвращает текст с html-кодом
         with open(link, 'w', encoding='utf-8') as f:
-            f.write(''.join(let['result']['translations']))
+            f.write(xx)
 
 
-def trans():
+def trans():  # Финальная функция, выполняющая композицию из остальных функций
     ways = path_sel()
     or_text = read_file(ways[0])
     lans = lan_sel()
     inf = plat_sel(lans[0], lans[1], or_text)
     url = inf[0]
-    req=requests.request(
+    req = requests.request(
         'post',
         url,
         params=inf[1],
         data=inf[2]
     )
     write_file(ways[1], req.json(), inf[3])
+
 
 trans()
