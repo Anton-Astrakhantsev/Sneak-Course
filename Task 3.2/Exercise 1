@@ -1,19 +1,7 @@
-# 80%
-# Программа работает, но еще осталась большая часть, связанная с оформлением
-
+# 90%
+# Программа отлично работает, с одним исключением: При попытки использовать переводчик Multillect в переведенном тексте возникают html-символы. К утру Я надеюсь избавиться от этого. И проверить на PEP8
 import requests
 
-path_one = 'C:\\Users\\En\\PycharmProjects\\Task 3.2.2\\DE.txt'
-path_two = 'C:\\Users\\En\\PycharmProjects\\Task 3.2.2\\DE_answer.txt'
-
-def plat_sel():
-    lin = 'https://translate.yandex.net/api/v1/tr.json/translate'
-    pl = input("Пожалуйста, выберете переводчик: Яндекс или Google ").lower()
-    if pl == 'yandex' or pl == 'яндекс':
-        lin = 'https://translate.yandex.net/api/v1/tr.json/translate'
-    elif pl == 'google' or pl == 'гугл':
-        lin = 'https://translate.yandex.net/api/v1/tr.json/translate'
-    return lin
 
 def path_sel():
     pa_f = input("Пожалуйста, укажите путь к файлу ")
@@ -24,54 +12,73 @@ def path_sel():
         pa_s = path_two
     return [pa_f, pa_s]
 
-def path_take(li):
+
+def lan_sel():
+    print(
+        'Возможные языки:'
+        'немецкий (de), испанский(es), французский(fr) и русский(ru)'
+    )
+    la_f = input("Пожалуйста, укажите язык с которого перевести ")
+    la_s = input("Пожалуйста, укажите язык на который перевести (по-умолчанию русский) ")
+    if la_s == '':
+        la_s = 'ru'
+    return [la_f, la_s]
+
+
+def plat_sel(l_x, l_y, rf):
+    link = 'https://translate.yandex.net/api/v1/tr.json/translate'
+    opt_f = 0
+    opt_s = 0
+    text_word = ''
+    pl = input("Пожалуйста, выберете переводчик: Яндекс или Multillect (y/m) ")
+    if pl == 'y':
+        link = 'https://translate.yandex.net/api/v1/tr.json/translate'
+        opt_f = {
+            'id': '72d6fbd7.5ab0bf36.0ab3de8b-3-0',
+            'srv': 'tr-text',
+            'lang': '{}-{}'.format(l_x, l_y),
+            'reason': 'auto'
+        }
+        opt_s = {
+            'text': rf
+        }
+    elif pl == 'm':
+        link = 'https://translate.multillect.com/form.json'
+        opt_f = {
+            'from': l_x,
+            'to': l_y,
+            'text': rf
+        }
+        opt_s = ''
+    return [link, opt_f, opt_s, pl]
+
+def read_file(link):
     tex = ''
-    with open(li, encoding='utf-8') as f:
+    with open(link, encoding='utf-8') as f:
         tex = f.read()
         return tex
 
-def path_give(li, dat):
-    with open(li, 'w', encoding='utf-8') as f:
-        f.write(''.join(dat['text']))
+def write_file(link, let, pl):
+    if pl == 'y':
+        with open(link, 'w', encoding='utf-8') as f:
+            f.write(''.join(let['text']))
+    elif pl == 'm':
+        with open(link, 'w', encoding='utf-8') as f:
+            f.write(''.join(let['result']['translations']))
 
-def lan_check(ll):
-    ll = ll.lower()
-    if ll == 'de' or ll == 'german' or ll == 'dutch' or ll == 'немецкий':
-        return  'de'
-    elif ll == 'es' or ll == 'spanish' or ll == 'испанский':
-        return 'es'
-    elif ll == 'fr' or ll == 'french' or ll == 'французский':
-        return 'fr'
-    elif ll == 'ru' or ll == 'russian' or ll == 'русский' or ll == '':
-        return 'ru'
-    else: return 'en'
-
-def lan_sel():
-    la_f = input("Пожалуйста, укажите язык с которого перевести ")
-    la_f = lan_check(la_f)
-    la_s = input("Пожалуйста, укажите язык на который перевести (по-умолчанию русский) ")
-    la_s = lan_check(la_s)
-    return [la_f, la_s]
 
 def trans():
-    url = plat_sel()
-    paths = path_sel()
+    ways = path_sel()
+    or_text = read_file(ways[0])
     lans = lan_sel()
-    dat_f = path_take(paths[0])
-    req = requests.request(
+    inf = plat_sel(lans[0], lans[1], or_text)
+    url = inf[0]
+    req=requests.request(
         'post',
         url,
-        params=dict(
-            id='72d6fbd7.5ab0bf36.0ab3de8b-3-0',
-            srv='tr-text',
-            lang='{}-{}'.format(lans[0], lans[1]),
-            reason='auto'
-        ),
-        data=dict(
-            text=path_take(paths[0])
-        )
+        params=inf[1],
+        data=inf[2]
     )
-    path_give(paths[1], req.json())
-    # print(path_take(paths[0]))
+    write_file(ways[1], req.json(), inf[3])
 
 trans()
