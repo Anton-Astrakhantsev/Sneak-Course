@@ -12,12 +12,17 @@ def checker(file_list_one): # Эта функция отбирает тольк�
 def researcher(word, way, file_list):
     next_list = []
     for fi in file_list:
-        with open(os.path.join(way, fi), 'rb') as f:
-            data = f.readlines()
-            for line in data:
-                if word in line.decode():
-                    next_list.append(fi)
+        with open(os.path.join(way, fi), encoding='utf-8') as f:
+            data = f.read()
+            if word in data:
+                next_list.append(fi)
     return list(set(next_list))
+
+
+def painter(next_list):
+    for n in next_list:
+        print(n)
+    print('Всего:', len(next_list), '\n')
 
 
 def main():
@@ -27,8 +32,7 @@ def main():
     while 1:
         word = input("Введите строку: ")
         next_list = researcher(word, way, file_list)
-        print(', '.join(next_list))
-        print('Всего:', len(next_list))
+        painter(next_list)
         file_list = next_list
 
 
