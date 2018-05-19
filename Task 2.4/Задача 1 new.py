@@ -1,7 +1,7 @@
 import os
 
 
-def checker(file_list_one):
+def checker(file_list_one): # Эта функция отбирает только sql-файлы для последующих действий
     file_list_two = []
     for f in file_list_one:
         if f.endswith('.sql'):
