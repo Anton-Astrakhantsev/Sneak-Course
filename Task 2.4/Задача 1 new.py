@@ -16,13 +16,13 @@ def researcher(word, way, file_list):
             data = f.read()
             if word in data:
                 next_list.append(fi)
-    return list(set(next_list))
+    return next_list
 
 
 def painter(next_list):
     for n in next_list:
         print(n)
-    print('Всего:', len(next_list), '\n')
+    print('Всего: {}\n'.format(len(next_list)))
 
 
 def main():
