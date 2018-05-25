@@ -14,7 +14,7 @@ auth_data = {
 }
 # print('?'.join((AUTH_URL, urlencode(auth_data))))
 
-TOKEN = '21410103c646988900018522c4c9fad9718b4d3cf5b266c4baba21742b55e3b82328ff4afb42a22d0e417'
+TOKEN = '21410103c646988900018522c4c9fad9718b4d3cf5b266c4baba21742b55e3b82328ff4afb42a22d0e418'
 
 
 def get_inf_fun(met):
